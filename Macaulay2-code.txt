@@ -1,0 +1,117 @@
+-- Macaulay2 Calculations
+
+-- Case non-generic I: proof of Proposition 5.4.2
+
+R = ZZ[t1,t2,t3]
+At = R[a1,b1,c1,d1,a2,b2,c2,d2]
+I = ideal (a1+a2-2*t1,b1+b2-2*t2,a1+a2+a1*a2-c1*c2,b1+b2+b1*b2-d1*d2,a1+a2+b1+b2+a1*b1+a2*b2+c1*d2+c2*d1-2*t3)
+A = At/I -- this constructs the ring A = A_{F,Z} 
+
+Xv = A^2 -- this is the pull back of the dual of the universal vector bundle V^*
+
+uv = map(Xv,Xv,matrix{{a1-t1,c1},{c2,a2-t1}})
+
+vv = map(Xv,Xv,matrix{{b1-t2,d1},{d2,b2-t2}})
+
+f1 = map(Xv,Xv^2,matrix{{uv,vv}})
+
+f2 = map(Xv^2,Xv^2,matrix{{uv*vv,-vv*vv},{-uv*uv,vv*uv}})
+
+f3 = map(Xv^2,Xv,matrix{{vv},{uv}})
+
+Cng1 = chainComplex{f1,f2,f3} -- this constructs the chain complex C_{F,Z}
+
+Cng1.dd^2 == 0 -- checks that it is indeed a complex
+
+HH_0 Cng1 == 0 -- outputs false: non-zero homology in degree 0
+HH_1 Cng1 == 0 -- outputs true: zero homology in degree 1
+HH_2 Cng1 == 0 -- outputs true: zero homology in degree 2
+HH_3 Cng1 == 0 -- outputs true: zero homology in degree 3
+
+M = HH_0 Cng1
+J = ann M -- computes annihilator in A of degree 0 homology
+
+---------------
+
+-- Case non-generiC II: proof of Proposition 5.5.3
+
+S = ZZ[A0,A1,B0,B1,C,Degrees=>{{0},{0},{2},{2},{-2}}]/(A0*B1+A1*B0)
+
+-- ConstruCts Z-algebra with Completion S
+
+L1 = S^{1}
+
+Lm1 = S^{-1}
+
+Lm3 = S^{-3}
+
+-- ConstruCts graded S-modules L_1, L_{-1}, L_{-3}
+
+Mt = map(directSum(Lm1,Lm1),directSum(Lm1,Lm3),matrix{{B0,-A0},{B1,A1}})
+
+isWellDefined Mt
+
+Qv = cokernel Mt
+
+-- ConstruCts the module with Completion Q^*
+
+f1 = map(L1,directSum(L1,L1,Qv),matrix{{A0,A1,-B1,B0}})
+
+f2 = map(directSum(L1,L1,Qv),directSum(L1,Qv,Qv),matrix{{-A1,-B1,B0,0,0},{A0,0,0,-B1,B0},{0,-A0,0,-A1,0},{0,0,-A0,0,-A1}})
+
+f3 = map(directSum(L1,Qv,Qv),Qv,matrix{{-B1,B0},{A1,0},{0,A1},{-A0,0},{0,-A0}})
+
+C1 = chainComplex{f1,f2,f3} -- ConstruCts chain Complex C_{O,1} Computing F(pi_alpha)
+
+C1.dd^2 == 0 -- CheCks it is a Complex
+
+HH_1 C1 == 0 -- outputs true: zero homology in degree 1
+
+HH_2 C1 == 0 -- outputs true: zero homology in degree 2
+
+HH_3 C1 == 0 -- outputs true: zero homology in degree 3
+
+g1 = map(Lm1,directSum(L1,Qv),matrix{{C,-A1,-A0}})
+
+g2 = map(directSum(L1,Qv),directSum(L1,L1),matrix{{A1,A0},{C,0},{0,C}})
+
+g3 = map(directSum(L1,L1),directSum(Lm1,L1),matrix{{B0,-A0},{B1,A1}})
+
+g4 = map(directSum(Lm1,L1),Qv,matrix{{A1,A0},{-B1,B0}})
+
+C2 = chainComplex(g1,g2,g3,g4)  -- ConstruCts chain Complex C_{O,2} Computing F(Sp)
+
+C2.dd^2 == 0 -- CheCks it is a Complex
+
+HH_1 C2 == 0 -- outputs true: zero homology in degree 1
+
+HH_2 C2 == 0 -- outputs true: zero homology in degree 2
+
+HH_3 C2 == 0 -- outputs true: zero homology in degree 3
+
+HH_4 C2 == 0 -- outputs true: zero homology in degree 4
+
+h1 = inducedMap(Qv,directSum(Lm1,Lm1))
+h2 = map(directSum(Lm1,Lm1),directSum(Lm1,Lm1),matrix{{B0*C,-A0},{B1*C,A1}})
+h3 = map(directSum(Lm1,Lm1),directSum(Lm1,Lm1,Qv),matrix{{A1,A0,A1,A0},{-B1*C,B0*C,-B1*C,B0*C}})
+h4 = map(directSum(Lm1,Lm1,Qv),directSum(Lm1,Lm1), matrix{{promote(1,S),promote(0,S)},{promote(0,S),promote(1,S)},{promote(-1,S),promote(0,S)},{promote(0,S),promote(-1,S)}})
+
+
+C3 = chainComplex(h1,h2,h3,h4)  -- ConstruCts chain Complex C_{O,3} Computing F(1)
+
+C3.dd^2 == 0 -- CheCks it is a Complex
+
+HH_0 C3 == 0 -- outputs true: zero homology in degree 0
+
+HH_1 C3 == 0 -- outputs false: non-zero homology in degree 1
+
+HH_2 C3 == 0 -- outputs true: zero homology in degree 2
+
+HH_3 C3 == 0 -- outputs true: zero homology in degree 3
+
+HH_4 C3 == 0 -- outputs true: zero homology in degree 4
+
+----------------
+
+
+
