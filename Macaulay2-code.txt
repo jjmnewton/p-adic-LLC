@@ -1,6 +1,6 @@
 -- Macaulay2 Calculations
 
--- Case non-generic I: proof of Proposition 5.4.2
+-- Case non-generic I: proof of Proposition 5.4.2 (5.9 in published version)
 
 R = ZZ[t1,t2,t3]
 At = R[a1,b1,c1,d1,a2,b2,c2,d2]
@@ -33,7 +33,7 @@ J = ann M -- computes annihilator in A of degree 0 homology
 
 ---------------
 
--- Case non-generiC II: proof of Proposition 5.5.3
+-- Case non-generiC II: proof of Proposition 5.5.3 (5.14 in published version)
 
 S = ZZ[A0,A1,B0,B1,C,Degrees=>{{0},{0},{2},{2},{-2}}]/(A0*B1+A1*B0)
 
